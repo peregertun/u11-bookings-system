@@ -1,0 +1,7 @@
+{
+  "env": {
+    "MONGO_USER": "per",
+    "MONGO_PASSWORD": "youshallnotpass",
+    "STRING": "mongodb+srv://dbAdmin:youshallnotpass@cluster0-eds3s.mongodb.net/cluster0?retryWrites=true&w=majority"
+  }
+}
