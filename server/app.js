@@ -69,22 +69,15 @@ app.use(
   })
 );
 
-// const uri = `mongodb+srv://
-//     ${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}
-//     @cluster0.eds3s.mongodb.net/cluster0?retryWrites=true&w=majority`;
-
-mongoose.set("useNewUrlParser", true);
-mongoose.set("useFindAndModify", false);
-mongoose.set("useCreateIndex", true);
-mongoose.set("useUnifiedTopology", true);
-mongoose;
 mongoose
-  .connect(process.env.DB_CONNECTION_STRING, { useNewUrlParser: true })
-  .then(() => {
+  .connect(process.env.DB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then((result) => {
     console.log("connected to db");
+    app.listen(4000);
   })
   .catch((err) => {
     console.log(err);
   });
-
-app.listen(4000);
