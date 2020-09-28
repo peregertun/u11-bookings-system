@@ -1,13 +1,28 @@
 const express = require("express");
 const router = express.Router();
 const Event = require("../models/event");
+const jwt = require("jsonwebtoken");
 
 //getting all
-router.get("/", async (req, res) => {
+router.get("/", authenticateToken, async (req, res) => {
   try {
     const events = await Event.find();
-    res.json(events);
-    // res.json(events.filter((event) => event.creator === req.body.username));
+    if (req.user.name === "admin") {
+      res.json(events);
+    } else {
+      let filteredEvents = [];
+      events.forEach((event) => {
+        if (event.isBooked === false || event.creator === req.user.name) {
+          if (event.creator === req.user.name) {
+            filteredEvents.push(event);
+          } else {
+            filteredEvents.push(event.date);
+          }
+        }
+      });
+
+      res.json(filteredEvents);
+    }
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -71,6 +86,18 @@ async function getEvent(req, res, next) {
 
   res.event = event;
   next();
+}
+
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
 }
 
 module.exports = router;
