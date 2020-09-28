@@ -7,6 +7,7 @@ router.get("/", async (req, res) => {
   try {
     const events = await Event.find();
     res.json(events);
+    // res.json(events.filter((event) => event.creator === req.body.username));
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -21,6 +22,7 @@ router.get("/:id", getEvent, (req, res) => {
 router.post("/", async (req, res) => {
   const event = new Event({
     date: req.body.date,
+    creator: req.body.creator,
     isBooked: req.body.isBooked,
   });
   try {
@@ -36,6 +38,7 @@ router.patch("/:id", getEvent, async (req, res) => {
   if (req.body.date != null) {
     res.event.date = req.body.date;
     res.event.isBooked = req.body.isBooked;
+    res.event.creator = req.body.creator;
   }
   try {
     const updatedEvent = await res.event.save();

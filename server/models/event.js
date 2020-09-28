@@ -5,6 +5,10 @@ const eventSchema = new Schema({
     type: String,
     required: true,
   },
+  creator: {
+    type: String,
+    required: true,
+  },
   isBooked: {
     type: Boolean,
     required: true,
@@ -14,10 +18,6 @@ const eventSchema = new Schema({
     required: true,
     default: Date.now,
   },
-  // creator: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: "User",
-  // },
 });
 
 module.exports = mongoose.model("Event", eventSchema);
