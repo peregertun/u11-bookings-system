@@ -1,0 +1,32 @@
+### Gets all events with username criteria
+GET http://localhost:3000/events
+
+
+### Gets a single event with the id
+GET http://localhost:3000/events/
+
+###
+GET http://localhost:3000/events/test
+
+### Creates a event
+POST http://localhost:3000/events/
+Content-Type: application/json
+
+{
+    "date": "torsdag",
+    "isBooked": false,
+    "creator": "per"
+}
+
+### Deletes a event with the id
+DELETE http://localhost:3000/events/5f6cf70cd87379335c472393
+
+### Updates a event with the id
+PATCH http://localhost:3000/events/5f71b066efe79d353cfd029e
+Content-Type: application/json
+
+{
+    "date": "måndag",
+    "isBooked": true,
+    "creator": "admin"
+}

@@ -1,0 +1,29 @@
+POST http://localhost:4000/login
+Content-Type: application/json
+
+{
+    "username": "admin"
+}
+
+###
+
+GET http://localhost:3000/events/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJpYXQiOjE2MDEyOTYwNTMsImV4cCI6MTYwMTI5NjExM30.8YNNmW51QqiQL2voFOSQbcI1fiyol9t9p8B0_eikPc0
+
+###
+
+POST http://localhost:4000/token
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJpYXQiOjE2MDEyOTYwNTMsImV4cCI6MTYwMTI5NjExM30.8YNNmW51QqiQL2voFOSQbcI1fiyol9t9p8B0_eikPc0"
+}
+
+###
+
+DELETE http://localhost:4000/logout
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJpYXQiOjE2MDEyOTYwNTMsImV4cCI6MTYwMTI5NjExM30.8YNNmW51QqiQL2voFOSQbcI1fiyol9t9p8B0_eikPc0"
+}
