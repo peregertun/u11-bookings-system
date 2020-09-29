@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const User = require("./models/user");
 
@@ -8,6 +9,15 @@ app.use(express.json());
 
 let refreshTokens = [];
 //This schould be stored in db
+
+mongoose.connect(process.env.DB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+db.on("error", (error) => console.log(error));
+db.once("open", () => console.log("connected to db"));
 
 app.post("/token", (req, res) => {
   const refreshToken = req.body.token;
@@ -21,26 +31,25 @@ app.post("/token", (req, res) => {
   });
 });
 
-app.post("/login", (req, res) => {
-  //auth user
-
-  //alla users ska finnas i db
-  //kolla om user finns i db
-  // const users = await User.find();
-
+app.post("/login", async (req, res) => {
   const username = req.body.username;
   const user = { name: username };
   const accessToken = generateAccessToken(user);
   const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
 
-  console.log(JSON.stringify(refreshTokens));
-
-  refreshTokens.push(refreshToken);
-
-  res.json({
-    accessToken: accessToken,
-    refreshToken: refreshToken,
-  });
+  try {
+    let result = await User.findOne({ username: username });
+    if (result == null) {
+      return res.status(404).json({ message: "cannot find user" });
+    }
+    res.status(200).json({
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      user: user,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 app.delete("/logout", (req, res) => {
