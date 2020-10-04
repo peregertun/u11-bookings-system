@@ -16,7 +16,7 @@ router.get("/", authenticateToken, async (req, res) => {
           if (event.creator === req.user.name) {
             filteredEvents.push(event);
           } else {
-            filteredEvents.push(event.date);
+            filteredEvents.push({ date: event.date, postDate: event.postDate });
           }
         }
       });
@@ -34,17 +34,19 @@ router.get("/:id", getEvent, (req, res) => {
 });
 
 //creating one
-router.post("/", async (req, res) => {
-  const event = new Event({
-    date: req.body.date,
-    creator: req.body.creator,
-    isBooked: req.body.isBooked,
-  });
-  try {
-    const newEvent = await event.save();
-    res.status(201).json(newEvent);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+router.post("/", authenticateToken, async (req, res) => {
+  if (req.user.name === "admin") {
+    const event = new Event({
+      date: req.body.date,
+      creator: req.body.creator,
+      isBooked: req.body.isBooked,
+    });
+    try {
+      const newEvent = await event.save();
+      res.status(201).json(newEvent);
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
   }
 });
 

@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-
+const cors = require("cors");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const app = express();
@@ -13,7 +13,13 @@ mongoose.connect(process.env.DB_URI, {
 const db = mongoose.connection;
 db.on("error", (error) => console.log(error));
 db.once("open", () => console.log("connected to db"));
+app.use(cors());
 app.use(express.json());
+
 const eventsRouter = require("./routes/events");
 app.use("/events", eventsRouter);
+
+const usersRouter = require("./routes/users");
+app.use("/users", usersRouter);
+
 app.listen(3000, () => console.log("server started"));

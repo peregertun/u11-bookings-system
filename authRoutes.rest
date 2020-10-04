@@ -2,13 +2,19 @@ POST http://localhost:4000/login
 Content-Type: application/json
 
 {
-    "username": "per"
+    "name": "admin"
 }
 
 ###
 
 GET http://localhost:3000/events/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicGVyIiwiaWF0IjoxNjAxMzcyMjg2LCJleHAiOjE2MDEzNzIzNDZ9.duBZ8z5b0T6pfTfuD4S9g1mTkgbsMmzf1sBWL6D9Z8c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDE4MzY1OTgsImV4cCI6MTYwMTgzNjY1OH0.Znv1rQaf4o5OLutIGY-1OWgenToCnZhRIi8gO4emGF0
+
+{
+    "date": "torsdag",
+    "isBooked": false,
+    "creator": "per"
+}
 
 ###
 

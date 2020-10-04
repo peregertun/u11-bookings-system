@@ -1,11 +1,10 @@
 import React from "react";
-import "./App.css";
+import "../App.css";
 import axios from "axios";
-import Calendar from "./calendar";
-// import Login from "./login/login";
-import Login from "./login/";
+import Calendar from "../calendar";
+import Login from "./login";
 
-class App extends React.Component {
+class LoginForm extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -76,13 +75,12 @@ class App extends React.Component {
         console.log(err);
       });
   }
-
   render() {
     const isLoggedIn = this.state.isLoggedIn;
     const events = this.state.events;
     return (
       <>
-        {/* <h2>log in</h2>
+        <h2>log in</h2>
         <form onSubmit={this.handleSubmit}>
           <label>User name</label>
           <input
@@ -94,9 +92,9 @@ class App extends React.Component {
           <button type="button" id="login-button" onClick={this.handleSubmit}>
             log in
           </button>
-        </form> */}
-        <Login />
-        {isLoggedIn && <p>Du är inloggad som {this.state.username}</p>}
+        </form>
+
+        {/* {isLoggedIn && <p>Du är inloggad som {this.state.username}</p>}
         <button onClick={this.getEvents}>events</button>
 
         {events.map((event, index) => (
@@ -112,11 +110,11 @@ class App extends React.Component {
               <li>Created date: {event.postDate}</li>
             </ul>
           </div>
-        ))}
+        ))} */}
         {/* <Calendar events={events} /> */}
       </>
     );
   }
 }
 
-export default App;
+export default LoginForm;
