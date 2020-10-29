@@ -1,28 +1,35 @@
 const express = require("express");
 const router = express.Router();
 const Event = require("../models/event");
+const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 
 //getting all
 router.get("/", authenticateToken, async (req, res) => {
-  try {
-    const events = await Event.find();
-    if (req.user.name === "admin") {
-      res.json(events);
-    } else {
-      let filteredEvents = [];
-      events.forEach((event) => {
-        if (event.isBooked === false || event.creator === req.user.name) {
-          if (event.creator === req.user.name) {
-            filteredEvents.push(event);
-          } else {
-            filteredEvents.push({ date: event.date, postDate: event.postDate });
-          }
-        }
-      });
+  let theUser;
 
-      res.json(filteredEvents);
+  try {
+    theUser = await User.findOne({ name: req.query.name });
+    // console.log(theUser);
+    if (theUser.isAdmin == true) {
+      const events = await Event.find();
+      res.json(events);
     }
+
+    const events = await Event.find();
+    let filteredEvents = [];
+    events.forEach((event) => {
+      console.log(event);
+      if (event.isBooked === false || event.creator === req.query.name) {
+        if (event.creator === req.query.name) {
+          filteredEvents.push(event);
+        } else {
+          filteredEvents.push({ date: event.date, postDate: event.postDate });
+        }
+      }
+    });
+
+    res.json(filteredEvents);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -90,9 +97,31 @@ async function getEvent(req, res, next) {
   next();
 }
 
+// function authenticateToken(req, res, next) {
+//   const authHeader = req.headers["authorization"];
+//   const token = authHeader && authHeader.split(" ")[1];
+//   if (token == null) return res.sendStatus(401);
+
+//   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+//     if (err) return res.sendStatus(403);
+//     req.user = user;
+//     next();
+//   });
+// }
+
 function authenticateToken(req, res, next) {
-  const authHeader = req.headers["authorization"];
+  let authHeader;
+
+  //GET
+  if (req.headers) {
+    authHeader = req.headers["authorization"];
+  }
+  //POST
+  if (req.body.headers) {
+    authHeader = req.body.headers["Authorization"];
+  }
   const token = authHeader && authHeader.split(" ")[1];
+  //   console.log(token);
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
@@ -101,5 +130,4 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
-
 module.exports = router;

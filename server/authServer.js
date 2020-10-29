@@ -22,7 +22,7 @@ db.once("open", () => console.log("connected to db"));
 
 app.post("/token", (req, res) => {
   const refreshToken = req.body.token;
-  console.log(JSON.stringify(refreshTokens));
+  // console.log(JSON.stringify(refreshTokens));
   if (refreshToken == null) return res.sendStatus(401);
   if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
@@ -34,19 +34,21 @@ app.post("/token", (req, res) => {
 
 app.post("/login", async (req, res) => {
   const username = req.body.username;
+  // console.log(req.body.name);
   const user = { name: username };
   const accessToken = generateAccessToken(user);
   const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
 
   try {
-    let result = await User.findOne({ username: username });
+    let result = await User.findOne({ name: req.body.name });
+    // console.log(result);
     if (result == null) {
       return res.status(404).json({ message: "cannot find user" });
     }
     res.status(200).json({
       accessToken: accessToken,
       refreshToken: refreshToken,
-      user: user,
+      result: result,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -54,13 +56,14 @@ app.post("/login", async (req, res) => {
 });
 
 app.delete("/logout", (req, res) => {
+  console.log(req.body.token);
   refreshTokens = refreshTokens.filter((token) => token !== req.body.token);
   res.sendStatus(204);
 });
 
 function generateAccessToken(user) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "1m",
+    expiresIn: "10m",
   });
 }
 

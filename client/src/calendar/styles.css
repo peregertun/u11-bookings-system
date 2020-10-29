@@ -2,11 +2,12 @@
     box-sizing: border-box;
     font-size: 1rem;
     max-width: 400px;
-    margin: 10px;
-    border-radius: 8px;
-    border: 0px solid #22282c;
-    background: #333d42;
-    box-shadow: 1px 1px 5px #161b1d, -1px -1px 5px #505f67;
+    margin: 0 auto;
+    padding: 0 30px;
+    /* border-radius: 8px; */
+    /* border: 0px solid #22282c; */
+    /* background: #333d42;
+    box-shadow: 1px 1px 5px #161b1d, -1px -1px 5px #505f67; */
 }
 
 .calendar .header {
@@ -29,9 +30,9 @@
     align-items: center;
 }
 
-.calendar .body {
-    /* border: 2px solid var(--light-blue); */
-}
+/* .calendar .body {
+    border: 2px solid var(--light-blue);
+} */
 
 .calendar .header .previous {
     flex: 1;
@@ -96,13 +97,13 @@
     background-color: var(--grey);
 }
 
-button {
+.calendar button {
     border: none;
     background-color: transparent;
     color: var(--white);
 }
 
-button:active {
+.calendar button:active {
     border: none;
 }
 

@@ -1,0 +1,33 @@
+a {
+    color: white;
+    text-decoration: none;
+}
+
+img {
+    width: 30px;
+}
+
+nav {
+    border-bottom: 8px solid var(--black);
+    background-color: #333;
+    overflow: hidden;
+    padding: 0 20px;
+    margin: 0 0 20px 0;
+    text-align: center;
+    box-shadow: 2px 2px 5px #161b1d, -2px -2px 5px #505f67;
+}
+
+nav li {
+    list-style: none;
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+nav li:hover {
+    background-color: var(--black);
+    color: var(--white);
+}

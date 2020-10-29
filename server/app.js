@@ -5,6 +5,8 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const app = express();
 
+const bodyParser = require("body-parser");
+
 mongoose.connect(process.env.DB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -17,7 +19,7 @@ app.use(cors());
 app.use(express.json());
 
 const eventsRouter = require("./routes/events");
-app.use("/events", eventsRouter);
+app.use("/events", eventsRouter, bodyParser);
 
 const usersRouter = require("./routes/users");
 app.use("/users", usersRouter);

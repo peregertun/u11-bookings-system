@@ -4,12 +4,12 @@ export default function buildCalendar(value) {
   const day = startDay.clone().subtract(1, "day");
   const calendar = [];
 
-  let event = [
-    {
-      date: "Sun Aug 30 2020 00:00:00 GMT+0200 (centraleuropeisk sommartid)",
-      text: "text",
-    },
-  ];
+  // let event = [
+  //   {
+  //     date: "Sun Aug 30 2020 00:00:00 GMT+0200 (centraleuropeisk sommartid)",
+  //     text: "text",
+  //   },
+  // ];
 
   while (day.isBefore(endDay, "day")) {
     calendar.push(

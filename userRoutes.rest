@@ -1,0 +1,42 @@
+POST http://localhost:4000/login
+Content-Type: application/json
+
+{
+    "name": "admin"
+}
+
+### Gets all users if logged in as admin
+
+GET http://localhost:3000/users/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDE5MjE1NDYsImV4cCI6MTYwMTkyMTYwNn0.usfykSA_0jc3wnwthLe62dojisZaDdZ7CQZCc_b4g_Q
+Content-Type: application/json
+
+{
+    "name": "admin"
+}
+
+### Gets a single event with the id 5f71b066efe79d353cfd029e
+GET http://localhost:3000/events/5f71b066efe79d353cfd029e
+
+
+### Creates a event
+POST http://localhost:3000/users/
+Content-Type: application/json
+
+{
+    "name": "user",
+    "isAdmin": false
+}
+
+### Deletes a event with the id
+DELETE http://localhost:3000/events/5f6cf70cd87379335c472393
+
+### Updates a event with the id
+PATCH http://localhost:3000/events/5f71b066efe79d353cfd029e
+Content-Type: application/json
+
+{
+    "date": "måndag",
+    "isBooked": true,
+    "creator": "admin"
+}
