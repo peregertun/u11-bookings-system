@@ -18,8 +18,7 @@ button.table-button {
     outline: 0;
     background: white;
     color: black;
-    margin: 10px;
-    padding: 10px 10px;
+    padding: 5px 5px;
 }
 
 /* td {
@@ -86,4 +85,12 @@ button.table-button {
 .test {
     background: red;
     color: yellow;
+}
+
+.display-true {
+    visibility: visible;
+}
+
+.display-false {
+    display: none;
 }

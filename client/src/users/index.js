@@ -12,6 +12,7 @@ class Users extends React.Component {
       users: [],
       user: [],
       nameFilter: [],
+      display: false,
     };
     this.getUsers = this.getUsers.bind(this);
     this.getUser = this.getUser.bind(this);
@@ -176,11 +177,11 @@ class Users extends React.Component {
       });
   };
 
-  // unlockForm = (_id) => {
-  //   this.setState({ editForm: "true" });
+  unlockForm = (_id) => {
+    this.setState({ display: !this.state.display });
 
-  //   // this.editUser(_id);
-  // };
+    // this.editUser(_id);
+  };
 
   onChangeValue = (event) => {
     event.preventDefault();
@@ -212,22 +213,23 @@ class Users extends React.Component {
 
     let users = this.state.users;
     users = this.filterRows(users);
-
+    let display = "display-" + this.state.display;
     return (
       <>
         <h1>Users</h1>
-        {/* <button type="button" id="get-events" onClick={this.getUsers}>
-          Get Users
-        </button> */}
-
-        {/* <button type="button" id="get-events" onClick={this.getUser}>
-          Get User
-        </button> */}
 
         <table className="users-table">
           <thead>
             <tr>
               <Header updateFilter={(value) => this._updateFilter(value)} />
+            </tr>
+          </thead>
+
+          <thead>
+            <tr>
+              <th colSpan="4">
+                <h2>Add user</h2>
+              </th>
             </tr>
             <tr>
               <th colSpan="2">User name</th>
@@ -289,17 +291,11 @@ class Users extends React.Component {
               <th>Actions</th>
             </tr>
           </thead>
-          {/* {user && <td>{user}</td>} */}
 
           <tbody>
             {users &&
-              users.length > 1 &&
               users.map((user, index) => (
-                <tr
-                  key={index}
-                  //   className="event-container"
-                  //   style={Object.assign({})}
-                >
+                <tr key={index}>
                   <td>
                     <form onSubmit={() => this.editUser(user._id)}>
                       <label htmlFor={"nameInput" + index}>{user.name}</label>
@@ -309,6 +305,7 @@ class Users extends React.Component {
                         id={"nameInput" + index}
                         placeholder={user.name}
                         name="nameInput"
+                        className={display}
                       />
                     </form>
                   </td>
@@ -325,18 +322,28 @@ class Users extends React.Component {
                         name="isAdminInput"
                         id="isAdminInput"
                         placeholder={String(user.isAdmin)}
+                        className={display}
                       />
                       {/* </fieldset> */}
                     </form>
                   </td>
 
-                  <td>
+                  <td className="buttons-td">
                     <button
                       className="table-button"
-                      onClick={() => this.editUser(user._id)}
+                      onClick={() => this.unlockForm(user._id)}
                     >
                       Edit
                     </button>
+
+                    <button
+                      // className="table-button"
+                      className={display}
+                      onClick={() => this.editUser(user._id)}
+                    >
+                      Update
+                    </button>
+
                     <button
                       className="table-button"
                       onClick={() => this.deleteUser(user._id)}

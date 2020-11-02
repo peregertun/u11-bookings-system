@@ -111,7 +111,6 @@ async function getEvent(req, res, next) {
 
 function authenticateToken(req, res, next) {
   let authHeader;
-
   //GET
   if (req.headers) {
     authHeader = req.headers["authorization"];
@@ -127,6 +126,7 @@ function authenticateToken(req, res, next) {
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
     req.user = user;
+
     next();
   });
 }

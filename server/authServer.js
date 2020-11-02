@@ -34,7 +34,7 @@ app.post("/token", (req, res) => {
 
 app.post("/login", async (req, res) => {
   const username = req.body.username;
-  // console.log(req.body.name);
+
   const user = { name: username };
   const accessToken = generateAccessToken(user);
   const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
@@ -56,7 +56,8 @@ app.post("/login", async (req, res) => {
 });
 
 app.delete("/logout", (req, res) => {
-  console.log(req.body.token);
+  // console.log(req.body.token);
+  // console.log(req.user);
   refreshTokens = refreshTokens.filter((token) => token !== req.body.token);
   res.sendStatus(204);
 });
