@@ -42,11 +42,12 @@ router.get("/:id", getEvent, (req, res) => {
 
 //creating one
 router.post("/", authenticateToken, async (req, res) => {
-  if (req.user.name === "admin") {
+  if (req.body.user.name === "admin") {
+    console.log(req.body.event);
     const event = new Event({
-      date: req.body.date,
-      creator: req.body.creator,
-      isBooked: req.body.isBooked,
+      date: req.body.event.date,
+      creator: req.body.event.creator,
+      isBooked: req.body.event.isBooked,
     });
     try {
       const newEvent = await event.save();
