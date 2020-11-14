@@ -7,6 +7,7 @@ const user = require("../models/user");
 //getting all
 router.get("/", authenticateToken, async (req, res) => {
   let theUser;
+  console.log(req.user);
 
   try {
     theUser = await User.findOne({ name: req.query.name });

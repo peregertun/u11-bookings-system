@@ -1,21 +1,28 @@
 .calendar {
     box-sizing: border-box;
-    font-size: 1rem;
-    max-width: 400px;
+    font-size: 1.5rem;
+    max-width: 500px;
     margin: 0 auto;
-    padding: 0 30px;
+    padding-bottom: 50px;
     /* border-radius: 8px; */
     /* border: 0px solid #22282c; */
     /* background: #333d42;
     box-shadow: 1px 1px 5px #161b1d, -1px -1px 5px #505f67; */
 }
 
+.calendar button {
+    font-size: 1.5rem;
+}
+
+button:focus {
+    outline: 0;
+}
+
 .calendar .header {
     border-radius: 10px 10px 0 0;
-    /* background-color: var(--light-blue); */
     text-align: center;
-    min-height: 3rem;
-    line-height: 3rem;
+    min-height: 5rem;
+    line-height: 5rem;
     color: var(--white);
     font-family: var(--font-book);
     font-weight: 900;
@@ -48,6 +55,8 @@
 
 .calendar .week {
     /* background-color: white; */
+    border-bottom: 1px solid white;
+    margin-bottom: 15px;
     width: calc(100% / 7);
     height: 44px;
     line-height: 44px;
@@ -64,7 +73,7 @@
 .calendar .day {
     position: relative;
     width: calc(100% / 7);
-    height: 44px;
+    height: 64px;
     display: inline-block;
     /* background-color: white; */
     padding: 0;
@@ -75,12 +84,12 @@
 }
 
 .calendar .day div {
-    width: 54px;
-    height: 44px;
+    width: 72px;
+    height: 64px;
     position: relative;
     color: var(--white);
     z-index: 100;
-    line-height: 44px;
+    line-height: 64px;
 }
 
 .calendar .day div.before {
@@ -88,7 +97,7 @@
 }
 
 .calendar .day div.selected {
-    background-color: var(--red);
+    background-color: #333;
     color: var(--white);
     font-weight: bold;
 }

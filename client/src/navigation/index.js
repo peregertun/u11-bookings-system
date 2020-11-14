@@ -7,7 +7,7 @@ import Calendar from "./icons/calendar.png";
 import Users from "./icons/users.png";
 
 export default function Navigation(props) {
-  let isAdmin = props.isAdmin;
+  let user = props.user;
 
   return (
     <nav>
@@ -24,7 +24,7 @@ export default function Navigation(props) {
             <p>Calendar</p>
           </Link>
         </li>
-        {isAdmin && (
+        {user.isAdmin && (
           <li>
             <Link to="/users">
               <img alt="users" src={Users} />
@@ -32,6 +32,7 @@ export default function Navigation(props) {
             </Link>
           </li>
         )}
+        {user.name && <p>Logged in as: {user.name}</p>}
       </ul>
     </nav>
   );

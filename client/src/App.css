@@ -11,7 +11,7 @@ body {
   /* background: linear-gradient(0deg, rgba(33, 38, 40, 1) 29%, rgba(51, 61, 66, 1) 82%); */
 }
 
-h1, h2, h3 {
+h1, h2, h3, p {
   color: var(--white);
 }
 
@@ -64,6 +64,7 @@ table {
 th {
   background-color: var(--darkgrey);
   padding: 15px;
+  text-align: left;
 }
 
 td {

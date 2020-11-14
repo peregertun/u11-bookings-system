@@ -7,8 +7,6 @@ class LoginForm extends React.Component {
     super();
     this.state = {
       username: "",
-      isLoggedIn: false,
-      // isAdmin: "false",
     };
 
     this.onChangeValue = this.onChangeValue.bind(this);
@@ -32,21 +30,16 @@ class LoginForm extends React.Component {
       .post(url, user)
       .then((res) => {
         if (res.status === 200)
-          this.setState({
-            isLoggedIn: true,
-            // isAdmin: res.data.result.isAdmin,
-          });
-        localStorage.setItem("accessToken", res.data.accessToken);
+          localStorage.setItem("accessToken", res.data.accessToken);
         localStorage.setItem("username", this.state.username);
-        // localStorage.setItem("isLoggedIn", this.state.isLoggedIn);
-        // console.log(res.data);
-        this.props.isAdmin(res.data.result.isAdmin);
+        this.props.setAdmin(res.data.result);
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
+  //STÄDA UPP LOGOUTUSER!
   logOutUser(e) {
     e.preventDefault();
 
@@ -65,7 +58,7 @@ class LoginForm extends React.Component {
           this.setState({
             isLoggedIn: false,
           });
-        this.props.isAdmin(false);
+        this.props.setAdmin(false);
       })
       .catch((err) => {
         console.log(err);
