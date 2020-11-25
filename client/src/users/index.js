@@ -29,26 +29,24 @@ class Users extends React.Component {
   getUsers() {
     const url = "http://localhost:3000/users/";
     let token = localStorage.getItem("accessToken");
-    let name = localStorage.getItem("username");
-
     let config = {
       headers: {
         Authorization: "Bearer " + token,
       },
-
-      params: {
-        name: name,
-      },
     };
+
     axios
       .get(url, config)
       .then((res) => {
-        // console.log(res);
+        console.log(res);
         if (res.status === 200) this.setState({ users: res.data });
-        // console.log(this.state.users);
+
       })
       .catch((err) => {
+        console.log("Permission denied, admin status required to see users");
         console.log(err);
+        this.props.logOutUser();
+
       });
   }
 
@@ -57,15 +55,9 @@ class Users extends React.Component {
 
     const url = "http://localhost:3000/users/5f68af787fa7e20d74b5845a";
     let token = localStorage.getItem("accessToken");
-    let name = localStorage.getItem("username");
-
     let config = {
       headers: {
         Authorization: "Bearer " + token,
-      },
-
-      params: {
-        name: name,
       },
     };
     axios
@@ -73,27 +65,18 @@ class Users extends React.Component {
       .then((res) => {
         console.log(res);
         if (res.status === 200) this.setState({ user: res.data });
-        console.log(this.state.user);
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  addUser(e) {
-    e.preventDefault();
-
+  addUser() {
     const url = "http://localhost:3000/users/";
     let token = localStorage.getItem("accessToken");
-    let name = localStorage.getItem("username");
-
     const config = {
       headers: {
         Authorization: "Bearer " + token,
-      },
-
-      user: {
-        name: name,
       },
       newUser: {
         name: this.state.nameInput,
@@ -105,8 +88,7 @@ class Users extends React.Component {
       .post(url, config)
       .then((res) => {
         console.log(res);
-        if (res.status === 200) this.setState({ user: res.data });
-        console.log(this.state.user);
+        this.getUsers();
       })
       .catch((err) => {
         console.log(err);
@@ -114,23 +96,12 @@ class Users extends React.Component {
   }
 
   editUser = (_id) => {
-    // e.preventDefault();
-    // console.log(_id);
-    console.log(this.state.newName);
-
     const url = "http://localhost:3000/users/" + _id;
     let token = localStorage.getItem("accessToken");
-    let name = localStorage.getItem("username");
-
     const config = {
       headers: {
         Authorization: "Bearer " + token,
       },
-
-      user: {
-        name: name,
-      },
-
       newUser: {
         name: this.state.nameInput,
         isAdmin: this.state.isAdminInput,
@@ -141,8 +112,7 @@ class Users extends React.Component {
       .patch(url, config)
       .then((res) => {
         console.log(res);
-        if (res.status === 200) this.setState({ user: res.data });
-        console.log(this.state.user);
+        this.getUsers();
       })
       .catch((err) => {
         console.log(err);
@@ -150,18 +120,11 @@ class Users extends React.Component {
   };
 
   deleteUser = (_id) => {
-    console.log(_id);
     const url = "http://localhost:3000/users/" + _id;
     let token = localStorage.getItem("accessToken");
-    let name = localStorage.getItem("username");
-
     let config = {
       headers: {
         Authorization: "Bearer " + token,
-      },
-
-      params: {
-        name: name,
       },
     };
 
@@ -169,8 +132,7 @@ class Users extends React.Component {
       .delete(url, config)
       .then((res) => {
         console.log(res);
-        if (res.status === 200) this.setState({ user: res.data });
-        console.log(this.state.user);
+        this.getUsers();
       })
       .catch((err) => {
         console.log(err);
@@ -208,12 +170,10 @@ class Users extends React.Component {
   }
 
   render() {
-    // const isLoggedIn = this.state.isLoggedIn;
-    // let editForm = this.state.editForm;
-
     let users = this.state.users;
     users = this.filterRows(users);
     let display = "display-" + this.state.display;
+
     return (
       <>
         <h1>Users</h1>
@@ -312,7 +272,7 @@ class Users extends React.Component {
                   <td>{user._id}</td>
                   <td>
                     <form onSubmit={() => this.editUser(user._id)}>
-                      {/* <fieldset> */}
+                      
                       <label htmlFor="isAdminInput">
                         {String(user.isAdmin)}
                       </label>
@@ -320,11 +280,11 @@ class Users extends React.Component {
                         type="text"
                         onChange={this.onChangeValue}
                         name="isAdminInput"
-                        id="isAdminInput"
+                        id={"isAdminInput" + user._id}
                         placeholder={String(user.isAdmin)}
                         className={display}
                       />
-                      {/* </fieldset> */}
+                      
                     </form>
                   </td>
 
@@ -337,7 +297,6 @@ class Users extends React.Component {
                     </button>
 
                     <button
-                      // className="table-button"
                       className={display}
                       onClick={() => this.editUser(user._id)}
                     >

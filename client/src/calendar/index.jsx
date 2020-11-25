@@ -5,6 +5,7 @@ import Events from "../events";
 import "./styles.css";
 import buildCalendar from "./build";
 import dayStyles, { beforeToday } from "./styles";
+import AddEvent from "../events/addEvent";
 
 export default function Calendar() {
   const [calendar, setCalendar] = useState([]);
@@ -16,30 +17,46 @@ export default function Calendar() {
     setCalendar(buildCalendar(value), selectDay(value));
   }, [value]);
 
-  const selectDay = () => setShowDay(true);
+  const selectDay = () => {
+    setShowDay(true);
+  };
 
   let dayInfo = [];
-  let eventText;
+  let creator;
   let day;
+  let postDate;
+  let selectedDay = value.format("dddd" + " " + "DD-MM-YYYY");
 
   const Day = () => {
-    let dayDets = value.format("dddd" + " " + "DD-MM-YYYY");
+    let dayDetails = value.format("dddd" + " " + "DD-MM-YYYY");
     let i;
     for (i = 0; i < events.length; i++) {
-      if (dayDets === events[i].date) {
-        dayInfo.push({ day: events[i].date, creator: events[i].creator });
+      if (dayDetails === events[i].date) {
+        dayInfo.push({
+          day: events[i].date,
+          creator: events[i].creator,
+          postDate: events[i].postDate,
+        });
+
         day = dayInfo[0].day;
-        eventText = dayInfo[0].creator;
+        creator = dayInfo[0].creator;
+        postDate = dayInfo[0].postDate;
       }
     }
 
     return (
       <div id="selected-day" className="body">
         <div id="selected-day-header" className="header">
-          {day}
+          {day && (
+            <>
+              <p>Event details:</p>
+              <p>Day: {day}</p>
+              <p>Creator: {creator}</p>
+              <p>Post date: {postDate}</p>
+            </>
+          )}
         </div>
-        <p>Creator:</p>
-        {eventText}
+        <AddEvent selectedDay={selectedDay} />
       </div>
     );
   };
@@ -82,9 +99,8 @@ export default function Calendar() {
             </div>
           ))}
         </div>
-
-        {showDay ? <Day /> : null}
       </div>
+      {showDay ? <Day /> : null}
       <Events Test={Test} />
     </>
   );

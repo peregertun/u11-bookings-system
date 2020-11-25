@@ -7,56 +7,47 @@ import Calendar from "./calendar";
 import Login from "./login";
 import Users from "./users";
 import Navigation from "./navigation";
-// import user from "../../server/models/user";
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      username: "",
-      isLoggedIn: false,
-      isAdmin: false,
-      events: [],
+      user: [],
     };
 
-    this.isAdmin = this.isAdmin.bind(this);
+    this.loginUser = this.loginUser.bind(this);
+    this.logOutUser = this.logOutUser.bind(this);
   }
 
-  isAdmin(isAdmin) {
-    // console.log(isAdmin);
-    this.setState({ isAdmin: isAdmin, isLoggedIn: true });
+  loginUser(user) {
+    this.setState({
+      user: user,
+    });
+  }
+
+  logOutUser() {
+    console.log("removing user name from state");
+    this.setState({
+      user: "",
+    });
   }
 
   render() {
-    // const isLoggedIn = this.state.isLoggedIn;
-    const events = this.state.events;
-    const isAdmin = this.state.isAdmin;
-    const isLoggedIn = this.state.isLoggedIn;
-    // console.log(isAdmin);
-
-    // let { isLoggedIn } = this.state;
-    // const renderAuthButton = () => {
-    //   if (isLoggedIn) {
-    //     return <button>Logout</button>;
-    //   } else {
-    //     return <button>Login</button>;
-    //   }
-    // };
+    const user = this.state.user;
 
     return (
       <Router>
-        <Navigation isAdmin={isAdmin} isLoggedIn={isLoggedIn} />
+        <Navigation user={user} loginUser={this.loginUser} logOutUser={this.logOutUser} />
+ 
         <main>
           <Route
             path="/login"
-            // component={Login}
-            render={(props) => <Login {...props} isAdmin={this.isAdmin} />}
+            render={(props) => <Login {...props} loginUser={this.loginUser} />}
           />
-          <Route path="/users" component={Users} />
-          <Route
-            path="/calendar"
-            render={(props) => <Calendar {...props} events={events} />}
+          <Route path="/users" 
+          render={(props) => <Users {...props} logOutUser={this.logOutUser} />}
           />
+          <Route path="/calendar" component={Calendar} />
         </main>
       </Router>
     );

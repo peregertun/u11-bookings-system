@@ -2,20 +2,17 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-const user = require("../models/user");
 
 //getting all
 router.get("/", authenticateToken, async (req, res) => {
-  let theUser;
+  if (req.user.isAdmin == false) {
+    res.status(401).json({ message: "unauthorized" });
+    return;
+  }
 
   try {
-    theUser = await User.findOne({ name: req.query.name });
-    if (theUser.isAdmin == true) {
-      const users = await User.find();
-      res.json(users);
-    } else {
-      res.status(401).json({ message: "unauthorized" });
-    }
+    const users = await User.find();
+    res.status(200).json(users);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -28,10 +25,16 @@ router.get("/:id", getUser, (req, res) => {
 
 //creating one
 router.post("/", authenticateToken, async (req, res) => {
+  if (req.user.isAdmin == false) {
+    res.status(401).json({ message: "unauthorized" });
+    return;
+  }
+
   const user = new User({
     name: req.body.newUser.name,
     isAdmin: req.body.newUser.isAdmin,
   });
+
   try {
     const newUser = await user.save();
     res.status(201).json(newUser);
@@ -41,39 +44,34 @@ router.post("/", authenticateToken, async (req, res) => {
 });
 
 //updating one
-router.patch("/:id", getUser, async (req, res) => {
-  if (req.body) {
-    res.user.name = req.body.newUser.name;
-    res.user.isAdmin = req.body.newUser.isAdmin;
+router.patch("/:id", authenticateToken, getUser, async (req, res) => {
+  if (req.user.isAdmin == false) {
+    res.status(401).json({ message: "unauthorized" });
+    return;
   }
+
+  res.user.name = req.body.newUser.name;
+  res.user.isAdmin = req.body.newUser.isAdmin;
+
   try {
     const updatedUser = await res.user.save();
-    res.json(updatedUser);
+    res.status(202).json(updatedUser);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
-
-  //   if (req.params) {
-  //     //post
-  //     if (req.body.date != null) {
-  //       res.user.name = req.params.newUser.name;
-  //       //   res.user.password = req.body.password;
-  //     }
-  //     try {
-  //       const updatedUser = await res.user.save();
-  //       res.json(updatedUser);
-  //     } catch (err) {
-  //       res.status(400).json({ message: err.message });
-  //     }
-  //   }
 });
 
 //deleting one
-router.delete("/:id", getUser, async (req, res) => {
+router.delete("/:id", authenticateToken, getUser, async (req, res) => {
+  if (req.user.isAdmin == false) {
+    res.status(401).json({ message: "unauthorized" });
+    return;
+  }
+
   if (res.user.isAdmin == false) {
     try {
       await res.user.remove();
-      res.json({ message: "user deleted" });
+      res.status(201).json({ message: "user deleted" });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
@@ -83,42 +81,15 @@ router.delete("/:id", getUser, async (req, res) => {
 });
 
 async function getUser(req, res, next) {
-  let theUser;
   let user;
-  //   console.log(req.body.newUser);
-  //   console.log(req.query);
-  //   console.log(req.body);
-  //   console.log(req.params);
 
-  if (JSON.stringify(req.body) == "{}") {
-    //Get
-    console.log("get");
-    try {
-      theUser = await User.findOne({ name: req.query.name });
-      if (theUser.isAdmin == true) user = await User.findById(req.params.id);
-      //   console.log(req.params.id);
-      if (user == null) {
-        return res.status(404).json({ message: "cannot find user" });
-      }
-    } catch (err) {
-      return res.status(500).json({ message: err.message });
+  try {
+    user = await User.findById(req.params.id);
+    if (user == null) {
+      return res.status(404).json({ message: "cannot find user" });
     }
-  }
-  if (JSON.stringify(req.query) == "{}") {
-    //post
-    console.log("här");
-    // console.log(req.params.id);
-    // console.log(req.body);
-    try {
-      theUser = await User.findOne({ name: req.body.user.name });
-      if (theUser.isAdmin == true) user = await User.findById(req.params.id);
-      console.log(req.params.id);
-      if (user == null) {
-        return res.status(404).json({ message: "cannot find user" });
-      }
-    } catch (err) {
-      return res.status(500).json({ message: err.message });
-    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
   }
 
   res.user = user;
@@ -137,13 +108,23 @@ function authenticateToken(req, res, next) {
     authHeader = req.body.headers["Authorization"];
   }
   const token = authHeader && authHeader.split(" ")[1];
-  //   console.log(token);
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
+
+    async function getUserObject(user) {
+      try {
+        user = await User.findOne({ name: user.name });
+      } catch (err) {
+        return res.status(500).json({ message: err.message });
+      }
+
+      req.user = user;
+      next();
+    }
+
+    getUserObject(user);
   });
 }
 
