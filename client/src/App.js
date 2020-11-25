@@ -15,45 +15,39 @@ class App extends React.Component {
       user: [],
     };
 
-    this.setAdmin = this.setAdmin.bind(this);
+    this.loginUser = this.loginUser.bind(this);
+    this.logOutUser = this.logOutUser.bind(this);
   }
 
-  setAdmin(user) {
+  loginUser(user) {
     this.setState({
       user: user,
     });
+  }
 
-    console.log(this.state);
+  logOutUser() {
+    console.log("removing user name from state");
+    this.setState({
+      user: "",
+    });
   }
 
   render() {
     const user = this.state.user;
 
-    // console.log(isAdmin);
-    // let { isLoggedIn } = this.state;
-    // const renderAuthButton = () => {
-    //   if (isLoggedIn) {
-    //     return <button>Logout</button>;
-    //   } else {
-    //     return <button>Login</button>;
-    //   }
-    // };
-
     return (
       <Router>
-        <Navigation user={user} />
+        <Navigation user={user} loginUser={this.loginUser} logOutUser={this.logOutUser} />
+ 
         <main>
           <Route
             path="/login"
-            // component={Login}
-            render={(props) => <Login {...props} setAdmin={this.setAdmin} />}
+            render={(props) => <Login {...props} loginUser={this.loginUser} />}
           />
-          <Route path="/users" component={Users} />
+          <Route path="/users" 
+          render={(props) => <Users {...props} logOutUser={this.logOutUser} />}
+          />
           <Route path="/calendar" component={Calendar} />
-          {/* <Route
-            path="/calendar"
-            render={(props) => <Calendar {...props} events={events} />}
-          /> */}
         </main>
       </Router>
     );

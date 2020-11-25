@@ -13,7 +13,7 @@ class AddEvent extends React.Component {
 
   addEvent(e) {
     e.preventDefault();
-    console.log(this.props.day);
+
     const url = "http://localhost:3000/events/";
     let token = localStorage.getItem("accessToken");
     let name = localStorage.getItem("username");
@@ -37,8 +37,7 @@ class AddEvent extends React.Component {
       .post(url, config)
       .then((res) => {
         console.log(res);
-        if (res.status === 200) this.setState({ user: res.data });
-        console.log(this.state.user); //VARFÖR SÄTTS USER VID RES??!!
+        //rerender med nytt event
       })
       .catch((err) => {
         console.log(err);

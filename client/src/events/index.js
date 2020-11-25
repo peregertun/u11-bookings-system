@@ -33,6 +33,7 @@ class Events extends React.Component {
     await axios
       .get(url, config)
       .then((res) => {
+        console.log(res);
         if (res.status === 200) this.setState({ events: res.data });
       })
       .catch((err) => {

@@ -9,7 +9,7 @@ const app = express();
 app.use(cors(), express.json());
 
 let refreshTokens = [];
-//This schould be stored in db
+//store tokens in db??
 
 mongoose.connect(process.env.DB_URI, {
   useNewUrlParser: true,
@@ -22,42 +22,45 @@ db.once("open", () => console.log("connected to db"));
 
 app.post("/token", (req, res) => {
   const refreshToken = req.body.token;
-  // console.log(JSON.stringify(refreshTokens));
+
   if (refreshToken == null) return res.sendStatus(401);
-  if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
+  if (!refreshTokens.includes(refreshToken)){
+    return res.status(403).json({message: "access denied"});
+  } 
+
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
-    const accessToken = generateAccessToken({ name: user.name });
-    res.json({ accessToken: accessToken });
+    const accessToken = generateAccessToken(user);
+    res.json({ accessToken: accessToken, user: user });
   });
 });
 
 app.post("/login", async (req, res) => {
-  const username = req.body.username;
-
-  const user = { name: username };
-  const accessToken = generateAccessToken(user);
-  const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+  let user = { name: req.body.username };
 
   try {
-    let result = await User.findOne({ name: req.body.name });
-    // console.log(result);
-    if (result == null) {
-      return res.status(404).json({ message: "cannot find user" });
+    let result = await User.findOne({ name: req.body.username });
+    user = { name: result.name, isAdmin: result.isAdmin }
+
+    if (req.body.password !== result.password){
+      return res.status(403).json({message: "access denied"});
     }
-    res.status(200).json({
-      accessToken: accessToken,
-      refreshToken: refreshToken,
-      result: result,
-    });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
+
+  const accessToken = generateAccessToken(user);
+  const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+  refreshTokens.push(refreshToken);
+
+  res.status(200).json({
+    accessToken: accessToken,
+    refreshToken: refreshToken,
+    user: user,
+  });
 });
 
 app.delete("/logout", (req, res) => {
-  // console.log(req.body.token);
-  // console.log(req.user);
   refreshTokens = refreshTokens.filter((token) => token !== req.body.token);
   res.sendStatus(204);
 });

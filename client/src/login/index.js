@@ -6,59 +6,56 @@ class LoginForm extends React.Component {
   constructor() {
     super();
     this.state = {
-      username: "",
     };
 
     this.onChangeValue = this.onChangeValue.bind(this);
-    this.loginUser = this.loginUser.bind(this);
-    this.logOutUser = this.logOutUser.bind(this);
+    this.login = this.login.bind(this);
+    this.logOut = this.logOut.bind(this);
   }
 
   onChangeValue = (event) => {
-    this.setState({ username: event.target.value });
+    this.setState({ [event.target.name]: event.target.value });
   };
 
-  loginUser(e) {
+  login(e) {
     e.preventDefault();
-
     const url = "http://localhost:4000/login";
     const user = {
-      name: this.state.username,
+      username: this.state.username,
+      password: this.state.password,
     };
-
+    
     axios
       .post(url, user)
       .then((res) => {
-        if (res.status === 200)
+        if (res.status === 200){
+          localStorage.clear();
           localStorage.setItem("accessToken", res.data.accessToken);
-        localStorage.setItem("username", this.state.username);
-        this.props.setAdmin(res.data.result);
+          localStorage.setItem("refreshToken", res.data.refreshToken);
+          this.props.loginUser(res.data.user);
+        }
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  //STÄDA UPP LOGOUTUSER!
-  logOutUser(e) {
+  logOut(e) {
     e.preventDefault();
 
     const url = "http://localhost:4000/logout";
-    let test = localStorage.getItem("accessToken");
-
     const token = {
-      token: test,
+      token: localStorage.getItem("accessToken"),
     };
 
     axios
       .delete(url, token)
       .then((res) => {
-        console.log(res.status);
-        if (res.status === 204)
-          this.setState({
-            isLoggedIn: false,
-          });
-        this.props.setAdmin(false);
+        if (res.status === 204) {
+          this.props.loginUser(false);
+          localStorage.clear();
+          console.log(localStorage);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -69,26 +66,32 @@ class LoginForm extends React.Component {
     return (
       <>
         <h2>log in</h2>
-        <form onSubmit={this.loginUser}>
+        <form onSubmit={this.login}>
           <label>User name</label>
           <input
             type="text"
             className="login-form"
+            name="username"
             placeholder="User name"
             onChange={this.onChangeValue}
             value={this.state.value}
           />
-          <button type="button" id="login-button" onClick={this.loginUser}>
+          <label>Password</label>
+          <input
+            type="text"
+            className="login-form"
+            name="password"
+            placeholder="Password"
+            onChange={this.onChangeValue}
+            value={this.state.value}
+          />
+          <button type="button" id="login-button" onClick={this.login}>
             log in
           </button>
-          <button type="button" id="login-button" onClick={this.logOutUser}>
+          <button type="button" id="login-button" onClick={this.logOut}>
             log out
           </button>
         </form>
-
-        {/* <button onClick={() => this.props.isAdmin(this.state.isAdmin)}>
-          test
-        </button> */}
       </>
     );
   }

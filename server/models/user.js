@@ -5,10 +5,10 @@ const userSchema = new Schema({
     type: String,
     requried: true,
   },
-  // password: {
-  //   type: String,
-  //   required: true,
-  // },
+  password: {
+    type: String,
+    required: true,
+  },
   isAdmin: {
     type: Boolean,
     required: true,
