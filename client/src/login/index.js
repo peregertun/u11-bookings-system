@@ -1,5 +1,5 @@
 import React from "react";
-import "../App.css";
+import "./styles.css";
 import axios from "axios";
 
 class LoginForm extends React.Component {
@@ -36,7 +36,6 @@ class LoginForm extends React.Component {
         }
       })
       .catch((err) => {
-        console.log(err);
       });
   }
 
@@ -54,19 +53,17 @@ class LoginForm extends React.Component {
         if (res.status === 204) {
           this.props.loginUser(false);
           localStorage.clear();
-          console.log(localStorage);
         }
       })
       .catch((err) => {
-        console.log(err);
       });
   }
 
   render() {
     return (
       <>
-        <h2>log in</h2>
-        <form onSubmit={this.login}>
+        <h2>Log in</h2>
+        <form onSubmit={this.login} id="log-in-form">
           <label>User name</label>
           <input
             type="text"
@@ -76,6 +73,7 @@ class LoginForm extends React.Component {
             onChange={this.onChangeValue}
             value={this.state.value}
           />
+
           <label>Password</label>
           <input
             type="text"
@@ -85,12 +83,14 @@ class LoginForm extends React.Component {
             onChange={this.onChangeValue}
             value={this.state.value}
           />
+
           <button type="button" id="login-button" onClick={this.login}>
-            log in
+            Log in
           </button>
           <button type="button" id="login-button" onClick={this.logOut}>
-            log out
+            Log out
           </button>
+          
         </form>
       </>
     );

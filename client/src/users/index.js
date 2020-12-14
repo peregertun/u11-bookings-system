@@ -38,15 +38,11 @@ class Users extends React.Component {
     axios
       .get(url, config)
       .then((res) => {
-        console.log(res);
         if (res.status === 200) this.setState({ users: res.data });
-
       })
       .catch((err) => {
         console.log("Permission denied, admin status required to see users");
-        console.log(err);
         this.props.logOutUser();
-
       });
   }
 
@@ -63,11 +59,9 @@ class Users extends React.Component {
     axios
       .get(url, config)
       .then((res) => {
-        console.log(res);
         if (res.status === 200) this.setState({ user: res.data });
       })
       .catch((err) => {
-        console.log(err);
       });
   }
 
@@ -87,11 +81,9 @@ class Users extends React.Component {
     axios
       .post(url, config)
       .then((res) => {
-        console.log(res);
         this.getUsers();
       })
       .catch((err) => {
-        console.log(err);
       });
   }
 
@@ -111,11 +103,9 @@ class Users extends React.Component {
     axios
       .patch(url, config)
       .then((res) => {
-        console.log(res);
         this.getUsers();
       })
       .catch((err) => {
-        console.log(err);
       });
   };
 
@@ -131,32 +121,24 @@ class Users extends React.Component {
     axios
       .delete(url, config)
       .then((res) => {
-        console.log(res);
         this.getUsers();
       })
       .catch((err) => {
-        console.log(err);
       });
   };
 
   unlockForm = (_id) => {
     this.setState({ display: !this.state.display });
-
     // this.editUser(_id);
   };
 
   onChangeValue = (event) => {
     event.preventDefault();
-    // console.log(event.target.name);
     const value = event.target.value;
     this.setState({
       ...this.state,
       [event.target.name]: value,
     });
-    // this.setState({ newName: event.target.value });
-    // this.setState({ isAdmin: event.target.value });
-    console.log(this.state);
-    // console.log(this.state.isAdmin);
   };
 
   _updateFilter(value) {
