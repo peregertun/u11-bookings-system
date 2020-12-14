@@ -1,4 +1,47 @@
-th {
-    background-color: #4CAF50;
+#log-in-form {
+    /* background-color: red; */
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+}
+label {
     color: white;
+    height: 50px;
+    padding: 20px;
+}
+.login-form {
+  display: block;
+  transition: width 0.4s ease-in-out;
+  outline: 0;
+  border-radius: 8px;
+  border: 0px solid #22282c;
+  background: var(--darkgrey);
+  box-shadow: 2px 2px 5px #161b1d, -2px -2px 5px #505f67;
+  margin: 0 auto;
+  padding: 10px 10px;
+}
+
+.login-form:focus {
+  width: 200px;
+}
+
+#login-button {
+  outline: 0;
+  border-radius: 8px;
+  border: 0px solid #22282c;
+  background: var(--darkgrey);
+  box-shadow: 2px 2px 5px #161b1d, -2px -2px 5px #505f67;
+  margin: 10px;
+  padding: 10px 30px;
+}
+
+#login-button:active {
+  outline: 0;
+  border-radius: 8px;
+  border: 0px solid #22282c;
+  background: #333d42;
+  box-shadow: 1px 1px 5px #161b1d, -1px -1px 5px #505f67;
+  margin: 10px;
+  padding: 10px 30px;
 }

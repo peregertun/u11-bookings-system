@@ -76,7 +76,7 @@ router.delete("/:id", authenticateToken, getUser, async (req, res) => {
       res.status(500).json({ message: err.message });
     }
   } else {
-    res.json({ message: "cannot delete a user with admin status" });
+    res.status(405).json({ message: "cannot delete a user with admin status" });
   }
 });
 
