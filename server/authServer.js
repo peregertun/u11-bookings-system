@@ -6,6 +6,7 @@ const cors = require("cors");
 const User = require("./models/user");
 
 const app = express();
+const PORT = process.env.AUTH_SERVER_PORT || 4000;
 app.use(cors(), express.json());
 
 let refreshTokens = [];
@@ -71,4 +72,4 @@ function generateAccessToken(user) {
   });
 }
 
-app.listen(4000, () => console.log("auth server started"));
+app.listen(PORT, () => console.log("auth server started"));
