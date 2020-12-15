@@ -66,6 +66,20 @@ app.delete("/logout", (req, res) => {
   res.sendStatus(204);
 });
 
+app.post("/signup", async (req, res) => {
+  const user = new User({
+    name: req.body.newUser.name,
+    isAdmin: req.body.newUser.isAdmin,
+  });
+
+  try {
+    const newUser = await user.save();
+    res.status(201).json(newUser);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
 function generateAccessToken(user) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: "10m",

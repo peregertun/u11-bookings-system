@@ -28,5 +28,5 @@ app.use("/users", usersRouter);
 app.listen(PORT, () => console.log("server started"));
 
 if(process.env.NODE_ENV === 'production') {
-  app.use(express.static('../client/build'))
+  app.use(express.static('client/build'))
 }

@@ -1,9 +1,8 @@
 import React from "react";
-import "../App.css";
+// import "../App.css";
 import axios from "axios";
-import SignUpForm from "./signup";
 
-class LoginForm extends React.Component {
+class SignUpForm extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -11,7 +10,6 @@ class LoginForm extends React.Component {
 
     this.onChangeValue = this.onChangeValue.bind(this);
     this.login = this.login.bind(this);
-    this.logOut = this.logOut.bind(this);
   }
 
   onChangeValue = (event) => {
@@ -20,7 +18,7 @@ class LoginForm extends React.Component {
 
   login(e) {
     e.preventDefault();
-    const url = "http://localhost:4000/login";
+    const url = "http://localhost:4000/signup";
     const user = {
       username: this.state.username,
       password: this.state.password,
@@ -41,32 +39,10 @@ class LoginForm extends React.Component {
       });
   }
 
-  logOut(e) {
-    e.preventDefault();
-
-    const url = "http://localhost:4000/logout";
-    const token = {
-      token: localStorage.getItem("accessToken"),
-    };
-
-    axios
-      .delete(url, token)
-      .then((res) => {
-        if (res.status === 204) {
-          this.props.loginUser(false);
-          localStorage.clear();
-          console.log(localStorage);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
   render() {
     return (
       <>
-        <h2>log in</h2>
+        <h2>Sign Up</h2>
         <form onSubmit={this.login}>
           <label>User name</label>
           <input
@@ -87,16 +63,12 @@ class LoginForm extends React.Component {
             value={this.state.value}
           />
           <button type="button" id="login-button" onClick={this.login}>
-            log in
-          </button>
-          <button type="button" id="login-button" onClick={this.logOut}>
-            log out
+            Sign Up
           </button>
         </form>
-        <SignUpForm />
       </>
     );
   }
 }
 
-export default LoginForm;
+export default SignUpForm;
