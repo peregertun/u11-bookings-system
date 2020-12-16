@@ -1,7 +1,7 @@
 import React from "react";
 import "../App.css";
 import axios from "axios";
-import SignUpForm from "./signup";
+// import SignUpForm from "./signup";
 
 class LoginForm extends React.Component {
   constructor() {
@@ -21,6 +21,8 @@ class LoginForm extends React.Component {
   login(e) {
     e.preventDefault();
     const url = "http://localhost:4000/login";
+      // const url ="https://u11-bookings-system-backend.herokuapp.com/login";
+
     const user = {
       username: this.state.username,
       password: this.state.password,
@@ -93,7 +95,7 @@ class LoginForm extends React.Component {
             log out
           </button>
         </form>
-        <SignUpForm />
+        {/* <SignUpForm /> */}
       </>
     );
   }

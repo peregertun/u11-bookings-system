@@ -1,15 +1,14 @@
 {
-  "name": "server",
+  "name": "auth-server",
   "version": "1.0.0",
   "description": "",
+  "main": "index.js",
   "engines": {
     "node": "12.x"
   },
   "scripts": {
-    "start": "node app.js",
-    "start:dev": "nodemon fileName.js",
-    "AuthServer": "node authServer.js",
-    "AuthServer:dev": "nodemon authServer.js",
+    "start": "node index.js",
+    "start:dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
