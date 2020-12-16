@@ -19,7 +19,7 @@ class Navigation extends React.Component {
   }
 
   updateToken() {
-    const url = "http://localhost:4000/token";
+    const url = "https://u11-auth.herokuapp.com/token";
     let refreshToken = localStorage.getItem("refreshToken");
     
     if (refreshToken === null ){

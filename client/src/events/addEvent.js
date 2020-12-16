@@ -14,7 +14,7 @@ class AddEvent extends React.Component {
   addEvent(e) {
     e.preventDefault();
 
-    const url = "http://localhost:3000/events/";
+    const url = "https://u11-bookings-system-backend.herokuapp.com/events/";
     let token = localStorage.getItem("accessToken");
     let name = localStorage.getItem("username");
 

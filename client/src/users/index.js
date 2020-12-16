@@ -27,7 +27,7 @@ class Users extends React.Component {
   }
 
   getUsers() {
-    const url = "http://localhost:3000/users/";
+    const url = "https://u11-bookings-system-backend.herokuapp.com/users";
     let token = localStorage.getItem("accessToken");
     let config = {
       headers: {
@@ -53,7 +53,8 @@ class Users extends React.Component {
   getUser(e) {
     e.preventDefault();
 
-    const url = "http://localhost:3000/users/5f68af787fa7e20d74b5845a";
+    //method only for testing, not implemented yet
+    const url = "https://u11-bookings-system-backend.herokuapp.com/users/5f68af787fa7e20d74b5845a";
     let token = localStorage.getItem("accessToken");
     let config = {
       headers: {
@@ -72,7 +73,7 @@ class Users extends React.Component {
   }
 
   addUser() {
-    const url = "http://localhost:3000/users/";
+    const url = "https://u11-bookings-system-backend.herokuapp.com/users/";
     let token = localStorage.getItem("accessToken");
     const config = {
       headers: {
@@ -96,7 +97,7 @@ class Users extends React.Component {
   }
 
   editUser = (_id) => {
-    const url = "http://localhost:3000/users/" + _id;
+    const url = "https://u11-bookings-system-backend.herokuapp.com/users/" + _id;
     let token = localStorage.getItem("accessToken");
     const config = {
       headers: {
@@ -120,7 +121,7 @@ class Users extends React.Component {
   };
 
   deleteUser = (_id) => {
-    const url = "http://localhost:3000/users/" + _id;
+    const url = "https://u11-bookings-system-backend.herokuapp.com/users/" + _id;
     let token = localStorage.getItem("accessToken");
     let config = {
       headers: {
@@ -147,16 +148,11 @@ class Users extends React.Component {
 
   onChangeValue = (event) => {
     event.preventDefault();
-    // console.log(event.target.name);
     const value = event.target.value;
     this.setState({
       ...this.state,
       [event.target.name]: value,
     });
-    // this.setState({ newName: event.target.value });
-    // this.setState({ isAdmin: event.target.value });
-    console.log(this.state);
-    // console.log(this.state.isAdmin);
   };
 
   _updateFilter(value) {
