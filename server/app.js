@@ -4,6 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 const bodyParser = require("body-parser");
 
@@ -24,4 +25,4 @@ app.use("/events", eventsRouter, bodyParser);
 const usersRouter = require("./routes/users");
 app.use("/users", usersRouter);
 
-app.listen(3000, () => console.log("server started"));
+app.listen(PORT, () => console.log("server started"));

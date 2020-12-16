@@ -1,9 +1,8 @@
 import React from "react";
-import "./styles.css";
+// import "../App.css";
 import axios from "axios";
-// import SignUpForm from "./signup";
 
-class LoginForm extends React.Component {
+class SignUpForm extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -11,7 +10,6 @@ class LoginForm extends React.Component {
 
     this.onChangeValue = this.onChangeValue.bind(this);
     this.login = this.login.bind(this);
-    this.logOut = this.logOut.bind(this);
   }
 
   onChangeValue = (event) => {
@@ -20,8 +18,8 @@ class LoginForm extends React.Component {
 
   login(e) {
     e.preventDefault();
-  
-    const url ="https://u11-auth.herokuapp.com/login";
+    // const url = "http://localhost:4000/signup";
+  const url ="https://u11-bookings-system-backend.herokuapp.com:4000/login";
     const user = {
       username: this.state.username,
       password: this.state.password,
@@ -38,34 +36,15 @@ class LoginForm extends React.Component {
         }
       })
       .catch((err) => {
-      });
-  }
-
-  logOut(e) {
-    e.preventDefault();
-
-    const url ="https://u11-auth.herokuapp.com/logout";
-    const token = {
-      token: localStorage.getItem("accessToken"),
-    };
-
-    axios
-      .delete(url, token)
-      .then((res) => {
-        if (res.status === 204) {
-          this.props.loginUser(false);
-          localStorage.clear();
-        }
-      })
-      .catch((err) => {
+        console.log(err);
       });
   }
 
   render() {
     return (
       <>
-        <h2>Log in</h2>
-        <form onSubmit={this.login} id="log-in-form">
+        <h2>Sign Up</h2>
+        <form onSubmit={this.login}>
           <label>User name</label>
           <input
             type="text"
@@ -75,7 +54,6 @@ class LoginForm extends React.Component {
             onChange={this.onChangeValue}
             value={this.state.value}
           />
-
           <label>Password</label>
           <input
             type="text"
@@ -85,19 +63,13 @@ class LoginForm extends React.Component {
             onChange={this.onChangeValue}
             value={this.state.value}
           />
-
           <button type="button" id="login-button" onClick={this.login}>
-            Log in
+            Sign Up
           </button>
-          <button type="button" id="login-button" onClick={this.logOut}>
-            Log out
-          </button>
-          
         </form>
-        {/* <SignUpForm /> */}
       </>
     );
   }
 }
 
-export default LoginForm;
+export default SignUpForm;

@@ -17,7 +17,7 @@ class Events extends React.Component {
   }
 
   async getEvents() {
-    const url = "http://localhost:3000/events";
+    const url = "https://u11-bookings-system-backend.herokuapp.com/events";
     let token = localStorage.getItem("accessToken");
     let name = localStorage.getItem("username");
 
@@ -46,7 +46,7 @@ class Events extends React.Component {
   addEvent(e) {
     e.preventDefault();
     console.log("hej");
-    const url = "http://localhost:3000/events/";
+    const url = "https://u11-bookings-system-backend.herokuapp.com/events/";
     let token = localStorage.getItem("accessToken");
     let name = localStorage.getItem("username");
 

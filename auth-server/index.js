@@ -6,7 +6,7 @@ const cors = require("cors");
 const User = require("./models/user");
 
 const app = express();
-const PORT = process.env.PORT2 || 4000;
+const PORT = process.env.PORT || 4000;
 app.use(cors(), express.json());
 
 let refreshTokens = [];
@@ -19,7 +19,7 @@ mongoose.connect(process.env.DB_URI, {
 
 const db = mongoose.connection;
 db.on("error", (error) => console.log(error));
-db.once("open", () => console.log("connected to db"));
+db.once("open", () => console.log("Authentication-server is connected to database"));
 
 app.post("/token", (req, res) => {
   const refreshToken = req.body.token;
@@ -86,4 +86,4 @@ function generateAccessToken(user) {
   });
 }
 
-app.listen(PORT, () => console.log("auth server started"));
+app.listen(PORT, () => console.log("Authentication-server has started"));
